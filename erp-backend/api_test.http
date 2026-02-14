@@ -1,0 +1,12 @@
+### Testar Conexão Geral (Health Check)
+GET http://localhost:3333/health
+
+###
+### Testar Login (POST)
+POST http://localhost:3333/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@erp.com",
+  "senha": "123456"
+}

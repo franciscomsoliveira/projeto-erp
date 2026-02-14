@@ -1,0 +1,6 @@
+@import "tailwindcss"; /* Forma simplificada da v4 */
+
+/* Se a v4 der erro com o @import acima, use o modo compatível: */
+/* @tailwind base; */
+/* @tailwind components; */
+/* @tailwind utilities; */
