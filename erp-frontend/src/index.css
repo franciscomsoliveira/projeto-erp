@@ -1,6 +1,12 @@
-@import "tailwindcss"; /* Forma simplificada da v4 */
+@import "tailwindcss";
 
-/* Se a v4 der erro com o @import acima, use o modo compatível: */
-/* @tailwind base; */
-/* @tailwind components; */
-/* @tailwind utilities; */
+/* Suas customizações globais abaixo do import */
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+}
