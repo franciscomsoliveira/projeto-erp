@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/auth", authRoutes);
-app.use("/estabelecimentos", estabelecimentosRoutes);
+app.use("/api/estabelecimentos", estabelecimentosRoutes);
 app.use("/health", healthRoutes);
 
 // Rota para capturar caminhos inexistentes

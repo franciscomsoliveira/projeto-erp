@@ -7,13 +7,26 @@ export default createGlobalStyle`
     box-sizing: border-box;
   }
 
-  html, body, #root {
-    height: 100%;
-    /* Removido o background-color fixo para não conflitar com o Tailwind */
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Remove o scroll horizontal que costuma aparecer com componentes absolute */
+    overflow-x: hidden; 
   }
 
-  body {
-    font-family: 'Inter', sans-serif; /* Opcional: define uma fonte padrão */
-    -webkit-font-smoothing: antialiased;
+  /* Ajuste para inputs e selects não ficarem com bordas brancas feias no focus */
+  input, select, textarea {
+    outline: none !important;
+  }
+
+  /* Animações globais suaves */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 `;

@@ -14,14 +14,6 @@ export default function Navbar({ toggleSidebar }) {
     <header className="h-16 bg-gray-900 border-b border-gray-800 flex items-center justify-between px-4 md:px-8 sticky top-0 z-30 shadow-md">
       {/* Lado Esquerdo: Toggle e Localização */}
       <div className="flex items-center gap-4">
-        <button
-          onClick={toggleSidebar}
-          className="p-2 hover:bg-gray-800 rounded-lg text-gray-400 transition-colors"
-          title="Alternar Menu"
-        >
-          <span className="text-xl font-bold">☰</span>
-        </button>
-
         <div className="hidden sm:flex flex-col border-l border-gray-700 pl-4">
           <span className="text-[10px] uppercase text-gray-500 font-bold tracking-widest">
             Estabelecimento
