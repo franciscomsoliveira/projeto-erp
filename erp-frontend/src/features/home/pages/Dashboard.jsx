@@ -1,5 +1,3 @@
-import Layout from "../../components/Layout";
-
 export default function Dashboard() {
   const stats = [
     {
@@ -33,7 +31,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="space-y-12">
+    <div className="w-full max-w-350 mx-auto p-6 space-y-8 animate-in fade-in duration-700">
       {" "}
       {/* Aumentado o espaço vertical entre as seções */}
       {/* Cabeçalho Refinado */}

@@ -82,3 +82,59 @@ export async function alternarStatus(req, res) {
     res.status(500).json({ error: "Erro ao atualizar status" });
   }
 }
+
+export async function atualizar(req, res) {
+  const { id } = req.params;
+  const {
+    nome_fantasia,
+    razao_social,
+    cnpj,
+    tipo,
+    estado,
+    cidade,
+    endereco,
+    numero,
+    bairro,
+    cep,
+    telefone,
+    email,
+  } = req.body;
+
+  try {
+    await pool.execute(
+      `UPDATE estabelecimentos SET
+        nome_fantasia = ?,
+        razao_social = ?,
+        cnpj = ?,
+        tipo = ?,
+        estado = ?,
+        cidade = ?,
+        endereco = ?,
+        numero = ?,
+        bairro = ?,
+        cep = ?,
+        telefone = ?,
+        email = ?
+      WHERE id = ?`,
+      [
+        nome_fantasia,
+        razao_social,
+        cnpj,
+        tipo,
+        estado,
+        cidade,
+        endereco,
+        numero,
+        bairro,
+        cep,
+        telefone,
+        email,
+        id,
+      ],
+    );
+
+    res.json({ message: "Atualizado com sucesso" });
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao atualizar" });
+  }
+}

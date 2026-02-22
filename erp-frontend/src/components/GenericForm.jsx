@@ -7,33 +7,35 @@ export default function GenericForm({
   onChange,
   onSubmit,
   title,
+  submitLabel,
 }) {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <div className="bg-[#111625]/60 backdrop-blur-md border border-white/5 rounded-xs shadow-2xl overflow-hidden animate-fade-in">
-      {/* HEADER DO FORM */}
-      <div className="px-8 py-6 border-b border-white/5 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white/1">
+    <div className="w-full max-w-7xl bg-slate-900/70 backdrop-blur-xl border border-slate-800 rounded-xl shadow-2xl overflow-hidden">
+      {/* HEADER */}
+      <div className="px-8 py-6 border-b border-slate-800 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
         <div>
-          <h2 className="text-xl font-bold text-white tracking-tight">
+          <h2 className="text-2xl font-semibold text-slate-100 tracking-tight">
             {title}
           </h2>
-          <p className="text-gray-500 text-xs mt-1 font-medium uppercase tracking-wider">
+          <p className="text-slate-500 text-xs mt-1 uppercase tracking-wider">
             Módulo de Cadastro
           </p>
         </div>
 
-        {/* NAVEGAÇÃO DE ABAS */}
-        <div className="flex gap-8 p-6 bg-black/40 rounded-xs border border-white/5">
+        {/* Tabs */}
+        <div className="flex gap-3 p-2 bg-slate-800/60 rounded-lg border border-slate-700">
           {sections.map((sec, idx) => (
             <button
               key={idx}
               type="button"
               onClick={() => setActiveTab(idx)}
-              className={`px-10 py-2 rounded-xs gap-4 text-xs font-bold transition-all duration-300 ${
+              className={`px-5 py-2 rounded-md text-xs font-semibold transition-all duration-200
+              ${
                 activeTab === idx
-                  ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 scale-105"
-                  : "text-gray-500 hover:text-gray-300 hover:bg-white/5"
+                  ? "bg-indigo-500 text-white shadow-md shadow-indigo-500/20"
+                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-700"
               }`}
             >
               {sec.title}
@@ -42,22 +44,25 @@ export default function GenericForm({
         </div>
       </div>
 
-      {/* CORPO DO FORM */}
+      {/* FORM */}
       <form onSubmit={onSubmit} className="p-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sections[activeTab].fields.map((field) => (
-            <div key={field.name} className="flex flex-col gap-2 group">
+            <div key={field.name} className="flex flex-col gap-2">
               {/* LABEL */}
-              <label className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] group-focus-within:text-indigo-400 transition-colors">
+              <label className="text-xs font-medium text-slate-400 uppercase tracking-wide">
                 {field.label}
+                {field.required && <span className="text-red-400 ml-1">*</span>}
               </label>
 
-              {/* INPUTS / SELECTS */}
+              {/* INPUT / SELECT */}
               {field.type === "select" ? (
                 <select
-                  className="w-full bg-[#0B0F1A] border border-white/10 p-3.5 rounded-xs text-sm text-gray-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all cursor-pointer appearance-none shadow-inner"
                   value={formData[field.name] || ""}
                   onChange={(e) => onChange(field.name, e.target.value)}
+                  className="bg-slate-800 border border-slate-700 text-slate-200 text-sm rounded-md w-full px-3 py-2.5
+                  focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500
+                  transition"
                 >
                   <option value="" disabled>
                     Selecione uma opção
@@ -73,33 +78,40 @@ export default function GenericForm({
                   type={field.type || "text"}
                   required={field.required}
                   placeholder={field.placeholder}
-                  className="w-full bg-[#0B0F1A] border border-white/10 p-3.5 rounded-xs text-sm text-white placeholder:text-gray-800 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all shadow-inner"
                   value={formData[field.name] || ""}
                   onChange={(e) => onChange(field.name, e.target.value)}
+                  className="bg-slate-800 border border-slate-700 text-slate-200 text-sm rounded-md w-full px-3 py-2.5
+                  placeholder:text-slate-500
+                  focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500
+                  transition"
                 />
               )}
             </div>
           ))}
         </div>
 
-        {/* RODAPÉ */}
-        <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2 text-gray-600">
+        {/* FOOTER */}
+        <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-2 text-slate-500">
             <AlertCircle size={14} />
-            <span className="text-[10px] font-medium uppercase tracking-widest">
-              Os campos marcados são obrigatórios
+            <span className="text-[10px] uppercase tracking-wider">
+              Campos com * são obrigatórios
             </span>
           </div>
 
           <button
             type="submit"
-            className="w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xs font-black text-xs uppercase tracking-widest shadow-xl shadow-indigo-600/20 transition-all active:scale-95 group"
+            className="w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-3
+            bg-indigo-500 hover:bg-indigo-400 text-white rounded-lg
+            font-semibold text-xs uppercase tracking-wider
+            shadow-lg shadow-indigo-500/20
+            transition duration-200 active:scale-95 group"
           >
             <Save
               size={18}
               className="group-hover:rotate-12 transition-transform"
             />
-            Salvar Registro
+            <label>{submitLabel}</label>
           </button>
         </div>
       </form>

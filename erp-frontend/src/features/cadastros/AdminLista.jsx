@@ -5,21 +5,21 @@ export default function AdminLista() {
 
   const categorias = [
     {
-      title: "Estabelecimentos",
-      description: "Gestão de matérias-primas e materiais básicos.",
+      title: "LOJAS",
+      description: "QUANTIDADE DE LOJAS CADASTRADAS",
       icon: "🧪",
       path: "/admin/estabelecimentos",
       color: "from-blue-600 to-blue-400",
     },
     {
-      title: "Fornecedores",
+      title: "FORNECEDORES",
       description: "Itens intermediários e processamento inicial.",
       icon: "⚙️",
       path: "/admin/fornecedores",
       color: "from-purple-600 to-purple-400",
     },
     {
-      title: "Usuários",
+      title: "Produtos de Venda",
       description: "Catálogo de produtos finais prontos para o cliente.",
       icon: "🛍️",
       path: "/admin/usuarios",
@@ -30,7 +30,7 @@ export default function AdminLista() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Módulo de Produtos</h1>
+        <h1 className="text-2xl font-bold text-white">Módulo Administrativo</h1>
         <p className="text-gray-400">
           Selecione uma categoria para gerenciar seu inventário e produção.
         </p>

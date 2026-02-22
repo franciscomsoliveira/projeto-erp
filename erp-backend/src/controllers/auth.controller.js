@@ -48,7 +48,7 @@ export async function login(req, res) {
       role: contexto.perfil_id,
     },
     process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES || "15m" },
+    { expiresIn: process.env.JWT_EXPIRES || "8h" },
   );
 
   res.json({

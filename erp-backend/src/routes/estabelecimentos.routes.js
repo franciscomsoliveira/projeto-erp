@@ -3,6 +3,7 @@ import {
   listarTudo,
   criar,
   alternarStatus,
+  atualizar,
 } from "../controllers/estabelecimentos.controller.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 import { onlyAdmin } from "../middlewares/authorization.middleware.js";
@@ -19,5 +20,7 @@ router.post("/", authMiddleware, onlyAdmin, criar);
 
 // 3. Rota para Ativar/Desativar (O botão da tabela)
 router.patch("/:id/status", authMiddleware, onlyAdmin, alternarStatus);
+
+router.put("/:id", authMiddleware, onlyAdmin, atualizar);
 
 export default router;
