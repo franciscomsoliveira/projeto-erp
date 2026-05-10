@@ -1,0 +1,2 @@
+import { FiX } from "react-icons/fi";import { Overlay, Dialog, Header, Body, Footer, CloseButton } from "./styles";
+export function Modal({ open, title, children, footer, onClose, size = "md" }) {if(!open)return null;return <Overlay onMouseDown={onClose}><Dialog $size={size} onMouseDown={(e)=>e.stopPropagation()} role="dialog" aria-modal="true"><Header><h2>{title}</h2><CloseButton type="button" onClick={onClose}><FiX /></CloseButton></Header><Body>{children}</Body>{footer&&<Footer>{footer}</Footer>}</Dialog></Overlay>}

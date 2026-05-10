@@ -1,0 +1,1 @@
+import styled,{keyframes}from"styled-components";const pulse=keyframes`0%,100%{opacity:.45}50%{opacity:1}`;export const SkeletonBox=styled.div`width:${({$width})=>$width};height:${({$height})=>$height};border-radius:${({$radius})=>$radius};background:${({theme})=>theme.colors.surfaceStrong};animation:${pulse} 1.2s ease-in-out infinite;`;

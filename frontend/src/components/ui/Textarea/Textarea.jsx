@@ -1,0 +1,2 @@
+import { Container, Label, StyledTextarea, ErrorText, HelperText } from "./styles";
+export function Textarea({ label, error, helperText, fullWidth = true, rows = 4, disabled = false, ...props }) {return <Container $fullWidth={fullWidth}>{label && <Label>{label}</Label>}<StyledTextarea rows={rows} disabled={disabled} $hasError={!!error} {...props}/>{error ? <ErrorText>{error}</ErrorText> : helperText ? <HelperText>{helperText}</HelperText> : null}</Container>}

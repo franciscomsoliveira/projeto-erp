@@ -1,0 +1,2 @@
+import { Wrapper, PageButton, Info } from "./styles";
+export function Pagination({ page = 1, totalPages = 1, onPageChange }) {const prev=Math.max(1,page-1);const next=Math.min(totalPages,page+1);return <Wrapper><PageButton type="button" disabled={page<=1} onClick={()=>onPageChange?.(prev)}>Anterior</PageButton><Info>Página {page} de {totalPages}</Info><PageButton type="button" disabled={page>=totalPages} onClick={()=>onPageChange?.(next)}>Próxima</PageButton></Wrapper>}

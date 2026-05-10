@@ -1,0 +1,2 @@
+import { TabsRoot, List, TabButton, Panel } from "./styles";
+export function Tabs({ tabs = [], active, onChange }) {const current=active ?? tabs[0]?.value;const tab=tabs.find(t=>t.value===current);return <TabsRoot><List>{tabs.map((item)=><TabButton key={item.value} type="button" $active={item.value===current} onClick={()=>onChange?.(item.value)}>{item.label}</TabButton>)}</List>{tab&&<Panel>{tab.content}</Panel>}</TabsRoot>}

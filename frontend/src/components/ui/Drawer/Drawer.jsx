@@ -1,0 +1,2 @@
+import { FiX } from "react-icons/fi";import { Overlay, Panel, Header, Body, Footer, CloseButton } from "./styles";
+export function Drawer({ open, title, children, footer, onClose, side = "right", width = "420px" }) {if(!open)return null;return <Overlay onMouseDown={onClose}><Panel $side={side} $width={width} onMouseDown={(e)=>e.stopPropagation()}><Header><h2>{title}</h2><CloseButton type="button" onClick={onClose}><FiX /></CloseButton></Header><Body>{children}</Body>{footer&&<Footer>{footer}</Footer>}</Panel></Overlay>}

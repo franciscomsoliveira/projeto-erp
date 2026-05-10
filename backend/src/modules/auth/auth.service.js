@@ -1,49 +1,54 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { pool } from "../../config/database.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-export async function loginService({ email, senha, loja_id }) {
-  const [usuarios] = await pool.execute(
+export async function loginService({ login, senha, codigo_loja }) {
+  const [rows] = await pool.execute(
     `
     SELECT 
       u.id,
       u.nome,
+      u.login,
       u.email,
       u.senha,
-      u.ativo,
+      u.status AS usuario_status,
 
-      ul.loja_id,
-      ul.perfil_id,
-
+      l.id AS loja_id,
+      l.codigo_loja,
       l.nome_fantasia,
+      l.status AS loja_status,
 
+      p.id AS perfil_id,
       p.nome AS perfil,
-      p.nivel
-    FROM tbUsuarios u
-    INNER JOIN tbUsuariosLojas ul 
-      ON ul.usuario_id = u.id
-    INNER JOIN tbLojas l 
-      ON l.id = ul.loja_id
-    INNER JOIN tbPerfis p 
-      ON p.id = ul.perfil_id
-    WHERE u.email = ?
-      AND ul.loja_id = ?
-      AND u.ativo = 1
+      p.nivel AS nivel
+
+    FROM tbusuarios u
+    JOIN tbusuarioslojas ul ON ul.usuario_id = u.id
+    JOIN tblojas l ON l.id = ul.loja_id
+    JOIN tbperfis p ON p.id = ul.perfil_id
+
+    WHERE (u.login = ? OR u.email = ?)
+      AND l.codigo_loja = ?
       AND ul.ativo = 1
-      AND l.ativo = 1
-      AND p.ativo = 1
-    LIMIT 1
     `,
-    [email, loja_id],
+    [login, login, codigo_loja],
   );
 
-  if (usuarios.length === 0) {
-    throw new Error("Usuário não encontrado ou sem acesso a esta loja");
+  const user = rows[0];
+
+  if (!user) {
+    throw new Error("Usuário ou loja inválidos");
   }
 
-  const usuario = usuarios[0];
+  if (user.usuario_status !== "ATIVO") {
+    throw new Error("Usuário inativo ou bloqueado");
+  }
 
-  const senhaValida = await bcrypt.compare(senha, usuario.senha);
+  if (user.loja_status !== "ATIVO") {
+    throw new Error("Loja inativa ou bloqueada");
+  }
+
+  const senhaValida = await bcrypt.compare(senha, user.senha);
 
   if (!senhaValida) {
     throw new Error("Senha inválida");
@@ -51,32 +56,34 @@ export async function loginService({ email, senha, loja_id }) {
 
   const token = jwt.sign(
     {
-      id: usuario.id,
-      nome: usuario.nome,
-      email: usuario.email,
-      loja_id: usuario.loja_id,
-      loja: usuario.nome_fantasia,
-      perfil_id: usuario.perfil_id,
-      perfil: usuario.perfil,
-      nivel: usuario.nivel,
+      user_id: user.id,
+      loja_id: user.loja_id,
+      perfil_id: user.perfil_id,
+      perfil: user.perfil,
+      nivel: user.nivel,
     },
     process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.JWT_EXPIRES_IN || "1d",
-    },
+    { expiresIn: "8h" },
   );
 
   return {
     token,
     usuario: {
-      id: usuario.id,
-      nome: usuario.nome,
-      email: usuario.email,
-      loja_id: usuario.loja_id,
-      loja: usuario.nome_fantasia,
-      perfil_id: usuario.perfil_id,
-      perfil: usuario.perfil,
-      nivel: usuario.nivel,
+      id: user.id,
+      nome: user.nome,
+      email: user.email,
+      login: user.login,
+      perfil_id: user.perfil_id,
+      perfil: user.perfil,
+      nivel: user.nivel,
+      loja_id: user.loja_id,
+      loja_nome: user.nome_fantasia,
+      loja_codigo: user.codigo_loja,
+    },
+    loja: {
+      id: user.loja_id,
+      codigo: user.codigo_loja,
+      nome: user.nome_fantasia,
     },
   };
 }
