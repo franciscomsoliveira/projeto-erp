@@ -1,2 +1,0 @@
-import { useState } from "react";import { Wrapper, Menu, Item } from "./styles";
-export function Dropdown({ trigger, items = [], align = "right" }) {const [open,setOpen]=useState(false);return <Wrapper onBlur={(e)=>{if(!e.currentTarget.contains(e.relatedTarget))setOpen(false)}}><button type="button" onClick={()=>setOpen(v=>!v)}>{trigger}</button>{open&&<Menu $align={align}>{items.map((item,index)=><Item key={index} type="button" onClick={(e)=>{item.onClick?.(e);setOpen(false)}} disabled={item.disabled}>{item.icon}{item.label}</Item>)}</Menu>}</Wrapper>}

@@ -5,10 +5,13 @@ import {
   atualizarUsuarioService,
   alterarStatusUsuarioService,
   removerVinculoUsuarioService,
+  verificarLoginService,
 } from "./usuarios.service.js";
 
 export async function listarUsuariosController(req, res) {
   try {
+    console.log("USER LOGADO:", req.user);
+
     const usuarios = await listarUsuariosService(req.user);
     return res.json(usuarios);
   } catch (error) {

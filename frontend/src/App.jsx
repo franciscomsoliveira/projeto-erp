@@ -1,5 +1,14 @@
-import { AppRoutes } from "./routes/AppRoutes";
+import { AppRoutes } from "@/app/routes";
+import { AuthProvider } from "@/core/auth";
+import { GlobalStyles } from "@/core/styles";
 
-export default function App() {
-  return <AppRoutes />;
+function App() {
+  return (
+    <AuthProvider>
+      <GlobalStyles />
+      <AppRoutes />
+    </AuthProvider>
+  );
 }
+
+export default App;

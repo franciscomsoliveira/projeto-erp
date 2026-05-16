@@ -18,12 +18,11 @@ router.use(authMiddleware);
 | SOMENTE NÍVEL 100
 |--------------------------------------------------------------------------
 */
+router.get("/select", listarPerfisSelectController);
 
 router.use(checkNivel([100]));
 
 router.get("/", listarPerfisController);
-
-router.get("/select", listarPerfisSelectController);
 
 router.post("/", criarPerfilController);
 

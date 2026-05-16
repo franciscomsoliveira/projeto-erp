@@ -20,7 +20,7 @@ export async function listarLojasController(req, res) {
 
 export async function listarLojasSelectController(req, res) {
   try {
-    const lojas = await listarLojasSelectService();
+    const lojas = await listarLojasSelectService(req.user);
 
     return res.json(lojas);
   } catch (error) {

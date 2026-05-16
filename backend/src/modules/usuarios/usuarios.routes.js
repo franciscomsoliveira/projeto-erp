@@ -17,13 +17,14 @@ const router = Router();
 
 router.use(authMiddleware);
 
-router.get("/", listarUsuariosController);
-router.get("/:id", buscarUsuarioController);
 router.get(
   "/check-login/:login",
   checkNivel([100, 90]),
   verificarLoginController,
 );
+
+router.get("/", listarUsuariosController);
+router.get("/:id", buscarUsuarioController);
 
 router.post("/", checkNivel([100, 90]), criarUsuarioController);
 
@@ -31,7 +32,7 @@ router.put("/:id", checkNivel([100, 90]), atualizarUsuarioController);
 
 router.patch(
   "/:id/status",
-  checkNivel([100, 90]),
+
   alterarStatusUsuarioController,
 );
 

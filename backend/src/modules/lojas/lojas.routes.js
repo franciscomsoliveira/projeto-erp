@@ -20,12 +20,11 @@ router.use(authMiddleware);
 | SOMENTE NÍVEL 100
 |--------------------------------------------------------------------------
 */
+router.get("/select", listarLojasSelectController);
 
 router.use(checkNivel([100]));
 
 router.get("/", listarLojasController);
-
-router.get("/select", listarLojasSelectController);
 
 router.get("/:id", buscarLojaController);
 

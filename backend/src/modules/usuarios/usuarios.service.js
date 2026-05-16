@@ -1,46 +1,42 @@
 import { pool } from "../../config/database.js";
 import bcrypt from "bcryptjs";
+import { validatePassword } from "../../utils/passwordValidator.js";
 
 export async function listarUsuariosService(userLogado) {
-  const params = [];
+  const nivel = Number(userLogado?.nivel);
+  const lojaId = userLogado?.loja_id;
 
-  let where = `
-    WHERE 1 = 1
-  `;
-
-  if (Number(userLogado.nivel) !== 100) {
-    where += ` AND ul.loja_id = ?`;
-    params.push(userLogado.loja_id);
-  }
-
-  const [rows] = await pool.execute(
-    `
+  let sql = `
     SELECT
       u.id,
       u.nome,
       u.login,
       u.email,
       u.status,
-
-      l.id AS loja_id,
-      l.codigo_loja,
+      ul.loja_id,
       l.nome_fantasia,
-
-      p.id AS perfil_id,
       p.nome AS perfil,
       p.nivel
-
     FROM tbusuarios u
-    JOIN tbusuarioslojas ul ON ul.usuario_id = u.id
-    JOIN tblojas l ON l.id = ul.loja_id
-    JOIN tbperfis p ON p.id = ul.perfil_id
+    INNER JOIN tbusuarioslojas ul ON ul.usuario_id = u.id
+    INNER JOIN tblojas l ON l.id = ul.loja_id
+    INNER JOIN tbperfis p ON p.id = ul.perfil_id
+    WHERE ul.ativo = 1
+  `;
 
-    ${where}
+  const params = [];
 
-    ORDER BY u.nome ASC
-    `,
-    params,
-  );
+  if (nivel !== 100) {
+    sql += ` AND ul.loja_id = ?`;
+    params.push(lojaId);
+  }
+
+  sql += ` ORDER BY u.nome ASC`;
+
+  console.log("SQL:", sql);
+  console.log("PARAMS:", params);
+
+  const [rows] = await pool.query(sql, params);
 
   return rows;
 }
@@ -92,14 +88,18 @@ export async function criarUsuarioService(dados, userLogado) {
     nome,
     login,
     email,
-    senha = "123456",
+    senha,
     status = "ATIVO",
     loja_id,
     perfil_id,
   } = dados;
 
-  if (!nome || !login || !email || !loja_id || !perfil_id) {
+  if (!nome || !login || !email || !senha || !loja_id || !perfil_id) {
     throw new Error("Preencha todos os campos obrigatórios");
+  }
+
+  if (senha.length < 8) {
+    throw new Error("A senha deve ter no mínimo 8 caracteres");
   }
 
   if (
@@ -126,6 +126,8 @@ export async function criarUsuarioService(dados, userLogado) {
     if (usuarioExistente.length > 0) {
       throw new Error("Login ou e-mail já cadastrado");
     }
+
+    validatePassword(senha);
 
     const senhaHash = await bcrypt.hash(senha, 10);
 

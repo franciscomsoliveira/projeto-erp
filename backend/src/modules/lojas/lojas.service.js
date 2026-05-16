@@ -20,16 +20,30 @@ export async function listarLojasService() {
   return rows;
 }
 
-export async function listarLojasSelectService() {
-  const [rows] = await pool.execute(`
+export async function listarLojasSelectService(userLogado) {
+  const nivel = Number(userLogado?.nivel);
+  const lojaId = Number(userLogado?.loja_id);
+
+  let sql = `
     SELECT
       id,
       codigo_loja,
       nome_fantasia
     FROM tblojas
     WHERE status = 'ATIVO'
-    ORDER BY nome_fantasia
-  `);
+  `;
+
+  const params = [];
+
+  // admin vê todas
+  if (nivel !== 100) {
+    sql += ` AND id = ?`;
+    params.push(lojaId);
+  }
+
+  sql += ` ORDER BY nome_fantasia`;
+
+  const [rows] = await pool.query(sql, params);
 
   return rows;
 }
