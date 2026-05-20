@@ -1,4 +1,4 @@
-import { Spinner, StyledButton, ButtonContent } from "./styles";
+import { ButtonContent, Spinner, StyledButton } from "./styles";
 
 export function Button({
   children,
@@ -20,14 +20,24 @@ export function Button({
       $size={size}
       $fullWidth={fullWidth}
       disabled={disabled || loading}
+      aria-busy={loading}
+      aria-disabled={disabled || loading}
+      data-variant={variant}
       {...props}
     >
-      {loading && <Spinner />}
-
       <ButtonContent>
-        {!loading && leftIcon}
-        {loading ? loadingText : children}
-        {!loading && rightIcon}
+        {loading ? (
+          <>
+            <Spinner />
+            {loadingText}
+          </>
+        ) : (
+          <>
+            {leftIcon}
+            {children}
+            {rightIcon}
+          </>
+        )}
       </ButtonContent>
     </StyledButton>
   );

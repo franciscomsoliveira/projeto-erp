@@ -1,11 +1,14 @@
 import {
   Container,
   Label,
+  RequiredMark,
   InputWrapper,
   StyledInput,
   IconBox,
   ErrorText,
   HelperText,
+  SuccessText,
+  Spinner,
 } from "./styles";
 
 export function Input({
@@ -13,6 +16,7 @@ export function Input({
   name,
   label,
   error,
+  success,
   helperText,
   leftIcon,
   rightIcon,
@@ -20,16 +24,33 @@ export function Input({
   maxWidth,
   size = "md",
   disabled = false,
+  readOnly = false,
+  loading = false,
+  required = false,
   type = "text",
   ...props
 }) {
   const inputId = id || name;
 
+  const messageId =
+    error || success || helperText ? `${inputId}-message` : undefined;
+
   return (
     <Container $fullWidth={fullWidth} $maxWidth={maxWidth}>
-      {label && <Label htmlFor={inputId}>{label}</Label>}
+      {label && (
+        <Label htmlFor={inputId}>
+          {label}
+          {required && <RequiredMark>*</RequiredMark>}
+        </Label>
+      )}
 
-      <InputWrapper $size={size} $hasError={!!error} $disabled={disabled}>
+      <InputWrapper
+        $size={size}
+        $hasError={!!error}
+        $hasSuccess={!!success}
+        $disabled={disabled}
+        $readOnly={readOnly}
+      >
         {leftIcon && <IconBox>{leftIcon}</IconBox>}
 
         <StyledInput
@@ -37,20 +58,28 @@ export function Input({
           name={name}
           type={type}
           disabled={disabled}
+          readOnly={readOnly}
+          required={required}
           aria-invalid={!!error}
-          aria-describedby={
-            error || helperText ? `${inputId}-message` : undefined
-          }
+          aria-describedby={messageId}
           {...props}
         />
 
-        {rightIcon && <IconBox>{rightIcon}</IconBox>}
+        {loading ? (
+          <IconBox>
+            <Spinner />
+          </IconBox>
+        ) : (
+          rightIcon && <IconBox>{rightIcon}</IconBox>
+        )}
       </InputWrapper>
 
       {error ? (
-        <ErrorText id={`${inputId}-message`}>{error}</ErrorText>
+        <ErrorText id={messageId}>{error}</ErrorText>
+      ) : success ? (
+        <SuccessText id={messageId}>{success}</SuccessText>
       ) : helperText ? (
-        <HelperText id={`${inputId}-message`}>{helperText}</HelperText>
+        <HelperText id={messageId}>{helperText}</HelperText>
       ) : null}
     </Container>
   );

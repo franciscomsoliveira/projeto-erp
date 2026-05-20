@@ -1,13 +1,15 @@
 import { AppRoutes } from "@/app/routes";
-import { AuthProvider } from "@/core/auth";
+import { AppProviders } from "@/app/providers";
+
 import { GlobalStyles } from "@/core/styles";
 
 function App() {
   return (
-    <AuthProvider>
+    <AppProviders>
       <GlobalStyles />
+
       <AppRoutes />
-    </AuthProvider>
+    </AppProviders>
   );
 }
 

@@ -1,11 +1,14 @@
 export { Button } from "./Button";
 
-export { ButtonLogin } from "./ButtonLogin";
-export { ButtonSave } from "./ButtonSave";
-export { ButtonDelete } from "./ButtonDelete";
-export { ButtonCancel } from "./ButtonCancel";
-export { ButtonClear } from "./ButtonClear";
-export { ButtonEdit } from "./ButtonEdit";
-export { ButtonNew } from "./ButtonNew";
-export { ButtonSearch } from "./ButtonSearch";
-export { ButtonBack } from "./ButtonBack";
+import { createButtonVariant } from "./createButtonVariant";
+import { BUTTON_CONFIGS } from "./button.configs";
+
+export const ButtonLogin = createButtonVariant(BUTTON_CONFIGS.login);
+export const ButtonSave = createButtonVariant(BUTTON_CONFIGS.save);
+export const ButtonDelete = createButtonVariant(BUTTON_CONFIGS.delete);
+export const ButtonCancel = createButtonVariant(BUTTON_CONFIGS.cancel);
+export const ButtonClear = createButtonVariant(BUTTON_CONFIGS.clear);
+export const ButtonEdit = createButtonVariant(BUTTON_CONFIGS.edit);
+export const ButtonNew = createButtonVariant(BUTTON_CONFIGS.new);
+export const ButtonSearch = createButtonVariant(BUTTON_CONFIGS.search);
+export const ButtonBack = createButtonVariant(BUTTON_CONFIGS.back);

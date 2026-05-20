@@ -7,9 +7,20 @@ import {
   StatMeta,
 } from "./styles";
 
-export function StatCard({ label, value, meta, icon, variant = "default" }) {
+export function StatCard({
+  label,
+  value,
+  meta,
+  icon,
+  variant = "default",
+  hoverable = true,
+}) {
   return (
-    <StatContainer $variant={variant}>
+    <StatContainer
+      $variant={variant}
+      $hoverable={hoverable}
+      data-variant={variant}
+    >
       {icon && <StatIcon>{icon}</StatIcon>}
 
       <StatContent>

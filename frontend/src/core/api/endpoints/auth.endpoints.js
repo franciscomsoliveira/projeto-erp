@@ -4,4 +4,5 @@ export const AUTH_ENDPOINTS = {
   LOGOUT: "/auth/logout",
 
   SELECT_STORE: "/auth/selecionar-loja",
+  SWITCH_STORE: "/auth/trocar-loja",
 };

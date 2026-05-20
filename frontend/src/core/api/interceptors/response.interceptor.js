@@ -1,5 +1,4 @@
 import { tokenStorage } from "../../storage/token.storage";
-
 import { userStorage } from "../../storage/user.storage";
 
 export function setupResponseInterceptor(api) {
@@ -8,13 +7,20 @@ export function setupResponseInterceptor(api) {
 
     (error) => {
       if (error.response?.status === 401) {
-        tokenStorage.remove();
+        const temTokenPrincipal = !!tokenStorage.getMain();
 
-        userStorage.remove();
+        // Só faz logout total se era uma sessão principal
+        if (temTokenPrincipal) {
+          tokenStorage.remove();
+          userStorage.remove();
 
-        if (window.location.pathname !== "/login") {
-          window.location.href = "/login";
+          if (window.location.pathname !== "/login") {
+            window.location.href = "/login";
+          }
         }
+
+        // Se era sessão temporária, deixa o erro subir normalmente
+        // o AuthContext e a página de seleção de loja tratam
       }
 
       return Promise.reject(error);

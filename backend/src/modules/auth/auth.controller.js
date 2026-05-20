@@ -1,42 +1,45 @@
-import { loginService, selecionarLojaService } from "./auth.service.js";
+import {
+  loginService,
+  selecionarLojaService,
+  trocarLojaService,
+} from "./auth.service.js";
 
 export async function login(req, res, next) {
   try {
-    const { login, senha } = req.body;
+    const result = await loginService(req.body);
 
-    if (!login || !senha) {
-      return res.status(400).json({
-        error: "Login e senha são obrigatórios",
-      });
-    }
-
-    const resultado = await loginService({
-      login,
-      senha,
-    });
-
-    return res.json(resultado);
+    return res.json(result);
   } catch (error) {
     next(error);
   }
 }
 
-export async function selecionarLojaController(req, res) {
+export async function selecionarLojaController(req, res, next) {
   try {
     const { loja_id } = req.body;
 
-    if (!loja_id) {
-      return res.status(400).json({
-        message: "Loja obrigatória",
-      });
-    }
-
-    const result = await selecionarLojaService(req.user.user_id, loja_id);
+    const result = await selecionarLojaService({
+      user: req.user,
+      loja_id,
+    });
 
     return res.json(result);
   } catch (error) {
-    return res.status(400).json({
-      message: error.message,
+    next(error);
+  }
+}
+
+export async function trocarLojaController(req, res, next) {
+  try {
+    const { loja_id } = req.body;
+
+    const result = await trocarLojaService({
+      usuario_id: req.user.user_id || req.user.id,
+      loja_id,
     });
+
+    return res.json(result);
+  } catch (error) {
+    next(error);
   }
 }

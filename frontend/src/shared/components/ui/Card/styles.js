@@ -100,6 +100,10 @@ export const CardContainer = styled.div`
         border-color: ${({ theme }) => theme.colors.primary};
       }
     `}
+    &:focus-visible {
+    outline: 3px solid ${({ theme }) => theme.colors.primarySoft};
+    outline-offset: 2px;
+  }
 `;
 
 export const Header = styled.div`

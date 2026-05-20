@@ -24,9 +24,16 @@ export const tokenStorage = {
     localStorage.setItem(AUTH_KEYS.TEMP_TOKEN, token);
   },
 
-  remove() {
+  removeMain() {
     localStorage.removeItem(AUTH_KEYS.TOKEN);
+  },
 
+  removeTemp() {
     localStorage.removeItem(AUTH_KEYS.TEMP_TOKEN);
+  },
+
+  remove() {
+    tokenStorage.removeMain();
+    tokenStorage.removeTemp();
   },
 };

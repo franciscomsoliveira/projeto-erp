@@ -1,19 +1,33 @@
+import { Suspense } from "react";
 import { Navigate } from "react-router-dom";
 
 import { useAuth } from "@/core/auth";
+import { hasPermission } from "@/core/permissions";
 
-export function ProtectedRoute({ children }) {
-  const { signed, needsStoreSelection } = useAuth();
+import { RouteFallback } from "./RouteFallback";
 
-  // usuário não autenticado
-  if (!signed && !needsStoreSelection) {
+export function ProtectedRoute({ route }) {
+  const { signed, user, loading } = useAuth();
+
+  if (loading) return <RouteFallback />;
+
+  if (!signed) {
     return <Navigate to="/login" replace />;
   }
 
-  // usuário precisa selecionar loja
-  if (needsStoreSelection) {
-    return <Navigate to="/selecionar-loja" replace />;
+  if (route?.permission && !hasPermission(user, route.permission)) {
+    return <Navigate to="/dashboard" replace />;
   }
 
-  return children;
+  const Component = route.component;
+
+  if (!Component) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return (
+    <Suspense fallback={<RouteFallback />}>
+      <Component />
+    </Suspense>
+  );
 }

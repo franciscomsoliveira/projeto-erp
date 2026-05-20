@@ -33,3 +33,5 @@ export function createTheme(mode = THEME_MODES.DARK) {
     zIndex,
   };
 }
+
+export { AppThemeProvider, useAppTheme } from "./ThemeProvider";

@@ -2,56 +2,44 @@ import styled from "styled-components";
 
 export const LayoutContainer = styled.div`
   min-height: 100vh;
-
-  background:
-    radial-gradient(
-      circle at top left,
-      color-mix(
-        in srgb,
-        ${({ theme }) => theme.colors.primary} 14%,
-        transparent
-      ),
-      transparent 34%
-    ),
-    ${({ theme }) => theme.colors.background};
-`;
-
-export const TopbarArea = styled.header`
-  position: sticky;
-  top: 0;
-  height: ${({ theme }) => theme.layout.topbarHeight};
-
-  z-index: ${({ theme }) => theme.zIndex.topbar};
-
-  background: ${({ theme }) => theme.colors.backgroundSoft};
-
-  backdrop-filter: blur(18px) saturate(180%);
-
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-`;
-
-export const BodyArea = styled.div`
-  min-height: calc(100vh - ${({ theme }) => theme.layout.topbarHeight});
-
-  ${({ theme }) => theme.media.desktop} {
-    display: grid;
-    grid-template-columns: ${({ theme }) => theme.layout.sidebarCollapsed} 1fr;
-  }
+  background: ${({ theme }) => theme.colors.background};
 `;
 
 export const MainArea = styled.main`
-  min-width: 0;
-  min-height: calc(100vh - ${({ theme }) => theme.layout.topbarHeight});
+  min-height: 100vh;
+  padding-top: ${({ theme }) => theme.layout.topbarHeight};
+
+  padding-left: ${({ theme, $expanded }) =>
+    $expanded ? theme.layout.sidebarWidth : theme.layout.sidebarCollapsed};
+
+  transition: padding-left ${({ theme }) => theme.transitions.normal};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    padding-left: 0;
+    transition: none;
+  }
 `;
 
 export const Content = styled.div`
-  padding: ${({ theme }) => theme.layout.pagePaddingMobile};
+  min-height: calc(100vh - ${({ theme }) => theme.layout.topbarHeight});
+  padding: ${({ theme }) => theme.layout.pagePaddingDesktop};
 
-  ${({ theme }) => theme.media.tablet} {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     padding: ${({ theme }) => theme.layout.pagePaddingTablet};
   }
 
-  ${({ theme }) => theme.media.desktop} {
-    padding: ${({ theme }) => theme.layout.pagePaddingDesktop};
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding: ${({ theme }) => theme.layout.pagePaddingMobile};
+  }
+`;
+
+export const MobileOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  background: rgba(0, 0, 0, 0.55);
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+    display: none;
   }
 `;

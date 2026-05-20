@@ -20,14 +20,10 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => tokenStorage.getMain());
 
   function logout() {
-    tokenStorage.remove();
-
+    tokenStorage.remove(); // limpa tudo — correto aqui
     userStorage.remove();
-
     setToken(null);
-
     setUser(null);
-
     setTempUser(null);
   }
 
@@ -64,43 +60,32 @@ export function AuthProvider({ children }) {
   }, [token]);
 
   async function login({ login, senha }) {
-    const response = await authService.login({
-      login,
-      senha,
-    });
+    const response = await authService.login({ login, senha });
 
-    const { token, usuario, needsStoreSelection } = response;
+    const { token, tempToken, usuario, needsStoreSelection } = response;
 
     if (needsStoreSelection) {
-      tokenStorage.setTemp(token);
-
+      tokenStorage.setTemp(tempToken);
       userStorage.setTemp(usuario);
 
-      localStorage.removeItem(AUTH_KEYS.TOKEN);
-
-      localStorage.removeItem(AUTH_KEYS.USER);
+      tokenStorage.removeMain();
+      userStorage.removeMain();
 
       setToken(null);
-
       setUser(null);
-
       setTempUser(usuario);
 
       return response;
     }
 
     tokenStorage.set(token);
-
     userStorage.set(usuario);
 
-    localStorage.removeItem(AUTH_KEYS.TEMP_TOKEN);
-
-    localStorage.removeItem(AUTH_KEYS.TEMP_USER);
+    tokenStorage.removeTemp();
+    userStorage.removeTemp();
 
     setToken(token);
-
     setUser(usuario);
-
     setTempUser(null);
 
     return response;
@@ -108,19 +93,27 @@ export function AuthProvider({ children }) {
 
   async function selecionarLoja(lojaId) {
     const response = await authService.selecionarLoja(lojaId);
+    tokenStorage.set(response.token);
+    userStorage.set(response.usuario);
+    tokenStorage.removeTemp(); // ← intenção explícita
+    userStorage.removeTemp(); // ← intenção explícita
+    setToken(response.token);
+    setUser(response.usuario);
+    setTempUser(null);
+    return response;
+  }
+
+  async function trocarLoja(lojaId) {
+    const response = await authService.trocarLoja(lojaId);
 
     tokenStorage.set(response.token);
-
     userStorage.set(response.usuario);
 
-    localStorage.removeItem(AUTH_KEYS.TEMP_TOKEN);
-
-    localStorage.removeItem(AUTH_KEYS.TEMP_USER);
+    tokenStorage.removeTemp();
+    userStorage.removeTemp();
 
     setToken(response.token);
-
     setUser(response.usuario);
-
     setTempUser(null);
 
     return response;
@@ -141,6 +134,7 @@ export function AuthProvider({ children }) {
         login,
         logout,
         selecionarLoja,
+        trocarLoja,
         setTempUser,
       }}
     >

@@ -1,0 +1,291 @@
+import { lazy } from "react";
+import * as Fi from "react-icons/fi";
+
+import { ROUTE_LAYOUTS } from "./constants/routeLayouts";
+import { PERMISSIONS } from "@/core/permissions";
+
+const Dashboard = lazy(() =>
+  import("@/modules/dashboard/pages/Dashboard").then((module) => ({
+    default: module.Dashboard,
+  })),
+);
+
+const PageEmConstrucao = lazy(() => import("@/shared/pages/PageEmConstrucao"));
+
+export const ROUTES_CONFIG = [
+  {
+    key: "dashboard",
+    label: "Dashboard",
+    path: "/dashboard",
+    icon: Fi.FiHome,
+    component: Dashboard,
+    layout: ROUTE_LAYOUTS.APP,
+    private: true,
+    sidebar: true,
+    module: "dashboard",
+    meta: {
+      title: "Dashboard",
+      breadcrumb: ["Início", "Dashboard"],
+    },
+  },
+
+  {
+    key: "operacao-vendas",
+    label: "Operação & Vendas",
+    icon: Fi.FiShoppingCart,
+    layout: ROUTE_LAYOUTS.APP,
+    private: true,
+    sidebar: true,
+    module: "operacao-vendas",
+    children: [
+      {
+        key: "gestao-pedidos",
+        label: "Gestão de Pedidos",
+        path: "/operacao/pedidos",
+        icon: Fi.FiClipboard,
+        component: PageEmConstrucao,
+        layout: ROUTE_LAYOUTS.APP,
+        private: true,
+        sidebar: true,
+        module: "pedidos",
+        permission: PERMISSIONS.PEDIDO_VER,
+        meta: {
+          title: "Gestão de Pedidos",
+          breadcrumb: ["Início", "Operação & Vendas", "Gestão de Pedidos"],
+        },
+      },
+      {
+        key: "monitoramento-caixas",
+        label: "Monitoramento de Caixas",
+        path: "/operacao/caixas",
+        icon: Fi.FiCreditCard,
+        component: PageEmConstrucao,
+        layout: ROUTE_LAYOUTS.APP,
+        private: true,
+        sidebar: true,
+        module: "caixas",
+        permission: PERMISSIONS.CAIXA_VER,
+        meta: {
+          title: "Monitoramento de Caixas",
+          breadcrumb: [
+            "Início",
+            "Operação & Vendas",
+            "Monitoramento de Caixas",
+          ],
+        },
+      },
+      {
+        key: "fechamento-diario",
+        label: "Fechamento Diário",
+        path: "/operacao/fechamento-diario",
+        icon: Fi.FiCheckSquare,
+        component: PageEmConstrucao,
+        layout: ROUTE_LAYOUTS.APP,
+        private: true,
+        sidebar: true,
+        module: "fechamento-diario",
+        permission: PERMISSIONS.FECHAMENTO_DIARIO_VER,
+        meta: {
+          title: "Fechamento Diário",
+          breadcrumb: ["Início", "Operação & Vendas", "Fechamento Diário"],
+        },
+      },
+    ],
+  },
+
+  {
+    key: "engenharia-cardapio",
+    label: "Engenharia de Cardápio",
+    icon: Fi.FiBookOpen,
+    layout: ROUTE_LAYOUTS.APP,
+    private: true,
+    sidebar: true,
+    module: "engenharia-cardapio",
+    children: [
+      {
+        key: "produtos-finais",
+        label: "Produtos Finais",
+        path: "/cardapio/produtos-finais",
+        icon: Fi.FiBox,
+        component: PageEmConstrucao,
+        layout: ROUTE_LAYOUTS.APP,
+        private: true,
+        sidebar: true,
+        module: "produtos-finais",
+        permission: PERMISSIONS.PRODUTO_FINAL_VER,
+        meta: {
+          title: "Produtos Finais",
+          breadcrumb: ["Início", "Engenharia de Cardápio", "Produtos Finais"],
+        },
+      },
+      {
+        key: "fichas-tecnicas",
+        label: "Fichas Técnicas",
+        path: "/cardapio/fichas-tecnicas",
+        icon: Fi.FiFileText,
+        component: PageEmConstrucao,
+        layout: ROUTE_LAYOUTS.APP,
+        private: true,
+        sidebar: true,
+        module: "fichas-tecnicas",
+        permission: PERMISSIONS.FICHA_TECNICA_VER,
+        meta: {
+          title: "Fichas Técnicas",
+          breadcrumb: ["Início", "Engenharia de Cardápio", "Fichas Técnicas"],
+        },
+      },
+    ],
+  },
+
+  {
+    key: "estoque-compras",
+    label: "Estoque & Compras",
+    icon: Fi.FiArchive,
+    layout: ROUTE_LAYOUTS.APP,
+    private: true,
+    sidebar: true,
+    module: "estoque-compras",
+    children: [
+      {
+        key: "gestao-insumos",
+        label: "Gestão de Insumos",
+        path: "/estoque/insumos",
+        icon: Fi.FiPackage,
+        component: PageEmConstrucao,
+        layout: ROUTE_LAYOUTS.APP,
+        private: true,
+        sidebar: true,
+        module: "insumos",
+        permission: PERMISSIONS.INSUMO_VER,
+        meta: {
+          title: "Gestão de Insumos",
+          breadcrumb: ["Início", "Estoque & Compras", "Gestão de Insumos"],
+        },
+      },
+      {
+        key: "entrada-notas-compras",
+        label: "Entrada de Notas / Compras",
+        path: "/estoque/compras",
+        icon: Fi.FiFilePlus,
+        component: PageEmConstrucao,
+        layout: ROUTE_LAYOUTS.APP,
+        private: true,
+        sidebar: true,
+        module: "compras",
+        permission: PERMISSIONS.COMPRA_VER,
+        meta: {
+          title: "Entrada de Notas / Compras",
+          breadcrumb: [
+            "Início",
+            "Estoque & Compras",
+            "Entrada de Notas / Compras",
+          ],
+        },
+      },
+      {
+        key: "fornecedores",
+        label: "Fornecedores",
+        path: "/estoque/fornecedores",
+        icon: Fi.FiTruck,
+        component: PageEmConstrucao,
+        layout: ROUTE_LAYOUTS.APP,
+        private: true,
+        sidebar: true,
+        module: "fornecedores",
+        permission: PERMISSIONS.FORNECEDOR_VER,
+        meta: {
+          title: "Fornecedores",
+          breadcrumb: ["Início", "Estoque & Compras", "Fornecedores"],
+        },
+      },
+      {
+        key: "auditoria-contagem",
+        label: "Auditoria e Contagem",
+        path: "/estoque/auditoria",
+        icon: Fi.FiSearch,
+        component: PageEmConstrucao,
+        layout: ROUTE_LAYOUTS.APP,
+        private: true,
+        sidebar: true,
+        module: "auditoria-contagem",
+        permission: PERMISSIONS.AUDITORIA_ESTOQUE_VER,
+        meta: {
+          title: "Auditoria e Contagem",
+          breadcrumb: ["Início", "Estoque & Compras", "Auditoria e Contagem"],
+        },
+      },
+    ],
+  },
+
+  {
+    key: "relatorios-inteligencia",
+    label: "Relatórios & Inteligência",
+    icon: Fi.FiBarChart2,
+    layout: ROUTE_LAYOUTS.APP,
+    private: true,
+    sidebar: true,
+    module: "relatorios-inteligencia",
+    children: [
+      {
+        key: "financeiros-custos",
+        label: "Financeiros e Custos",
+        path: "/relatorios/financeiros-custos",
+        icon: Fi.FiDollarSign,
+        component: PageEmConstrucao,
+        layout: ROUTE_LAYOUTS.APP,
+        private: true,
+        sidebar: true,
+        module: "financeiros-custos",
+        permission: PERMISSIONS.RELATORIO_FINANCEIRO_VER,
+        meta: {
+          title: "Financeiros e Custos",
+          breadcrumb: [
+            "Início",
+            "Relatórios & Inteligência",
+            "Financeiros e Custos",
+          ],
+        },
+      },
+      {
+        key: "curva-abc-produtos",
+        label: "Curva ABC de Produtos",
+        path: "/relatorios/curva-abc",
+        icon: Fi.FiTrendingUp,
+        component: PageEmConstrucao,
+        layout: ROUTE_LAYOUTS.APP,
+        private: true,
+        sidebar: true,
+        module: "curva-abc",
+        permission: PERMISSIONS.CURVA_ABC_VER,
+        meta: {
+          title: "Curva ABC de Produtos",
+          breadcrumb: [
+            "Início",
+            "Relatórios & Inteligência",
+            "Curva ABC de Produtos",
+          ],
+        },
+      },
+      {
+        key: "exportacao-dados",
+        label: "Exportação de Dados",
+        path: "/relatorios/exportacao",
+        icon: Fi.FiDownload,
+        component: PageEmConstrucao,
+        layout: ROUTE_LAYOUTS.APP,
+        private: true,
+        sidebar: true,
+        module: "exportacao-dados",
+        permission: PERMISSIONS.EXPORTACAO_DADOS_VER,
+        meta: {
+          title: "Exportação de Dados",
+          breadcrumb: [
+            "Início",
+            "Relatórios & Inteligência",
+            "Exportação de Dados",
+          ],
+        },
+      },
+    ],
+  },
+];

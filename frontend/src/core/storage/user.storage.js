@@ -6,7 +6,6 @@ export const userStorage = {
   get() {
     return getStorageJson(AUTH_KEYS.USER);
   },
-
   getTemp() {
     return getStorageJson(AUTH_KEYS.TEMP_USER);
   },
@@ -14,14 +13,18 @@ export const userStorage = {
   set(user) {
     localStorage.setItem(AUTH_KEYS.USER, JSON.stringify(user));
   },
-
   setTemp(user) {
     localStorage.setItem(AUTH_KEYS.TEMP_USER, JSON.stringify(user));
   },
 
-  remove() {
+  removeMain() {
     localStorage.removeItem(AUTH_KEYS.USER);
-
+  }, // ← novo
+  removeTemp() {
     localStorage.removeItem(AUTH_KEYS.TEMP_USER);
+  }, // ← novo
+  remove() {
+    userStorage.removeMain();
+    userStorage.removeTemp();
   },
 };

@@ -1,6 +1,3 @@
-export { Breadcrumb } from "./Breadcrumb";
-export { Pagination } from "./Pagination";
-export { PageTabs } from "./PageTabs";
-export { Stepper } from "./Stepper";
-export { NavSection } from "./NavSection";
-export { NavItem } from "./NavItem";
+export { Sidebar } from "./Sidebar";
+export { TopBar } from "./TopBar";
+export { PageHeader } from "./PageHeader";

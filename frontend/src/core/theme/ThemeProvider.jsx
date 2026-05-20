@@ -8,16 +8,22 @@ import { themeStorage } from "../storage/theme.storage";
 
 const ThemeContext = createContext({});
 
+function getInitialTheme() {
+  const storedTheme = themeStorage.get();
+
+  if (storedTheme === THEME_MODES.DARK || storedTheme === THEME_MODES.LIGHT) {
+    return storedTheme;
+  }
+
+  const prefersDark = window.matchMedia?.(
+    "(prefers-color-scheme: dark)",
+  )?.matches;
+
+  return prefersDark ? THEME_MODES.DARK : THEME_MODES.LIGHT;
+}
+
 export function AppThemeProvider({ children }) {
-  const [mode, setMode] = useState(() => {
-    const storedTheme = themeStorage.get();
-
-    if (storedTheme === THEME_MODES.DARK || storedTheme === THEME_MODES.LIGHT) {
-      return storedTheme;
-    }
-
-    return THEME_MODES.DARK;
-  });
+  const [mode, setMode] = useState(getInitialTheme);
 
   useEffect(() => {
     themeStorage.set(mode);

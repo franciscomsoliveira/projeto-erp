@@ -3,16 +3,14 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "@/core/auth";
 
 export function PublicRoute({ children }) {
-  const { signed, needsStoreSelection } = useAuth();
+  const { signed, loading } = useAuth();
 
-  // usuário autenticado
-  if (signed) {
-    return <Navigate to="/dashboard" replace />;
+  if (loading) {
+    return null;
   }
 
-  // usuário com sessão temporária
-  if (needsStoreSelection) {
-    return <Navigate to="/selecionar-loja" replace />;
+  if (signed) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return children;

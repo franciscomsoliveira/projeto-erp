@@ -57,8 +57,11 @@ export const InputWrapper = styled.div`
   border-radius: ${({ theme }) => theme.radius.sm};
 
   border: 1px solid
-    ${({ theme, $hasError }) =>
-      $hasError ? theme.colors.danger : theme.colors.border};
+    ${({ theme, $hasError, $hasSuccess }) => {
+      if ($hasError) return theme.colors.danger;
+      if ($hasSuccess) return theme.colors.success;
+      return theme.colors.border;
+    }};
 
   background: ${({ theme }) => theme.colors.input};
   color: ${({ theme }) => theme.colors.text};
@@ -72,12 +75,18 @@ export const InputWrapper = styled.div`
   ${({ $size }) => sizes[$size] || sizes.md}
 
   &:focus-within {
-    border-color: ${({ theme, $hasError }) =>
-      $hasError ? theme.colors.danger : theme.colors.primary};
+    border-color: ${({ theme, $hasError, $hasSuccess }) => {
+      if ($hasError) return theme.colors.danger;
+      if ($hasSuccess) return theme.colors.success;
+      return theme.colors.primary;
+    }};
 
     box-shadow: 0 0 0 3px
-      ${({ theme, $hasError }) =>
-        $hasError ? theme.colors.dangerSoft : theme.colors.primarySoft};
+      ${({ theme, $hasError, $hasSuccess }) => {
+        if ($hasError) return theme.colors.dangerSoft;
+        if ($hasSuccess) return theme.colors.successSoft;
+        return theme.colors.primarySoft;
+      }};
   }
 
   ${({ $disabled }) =>
@@ -156,4 +165,30 @@ export const ErrorText = styled.span`
 export const HelperText = styled.span`
   font-size: ${({ theme }) => theme.typography.fontSize.xs};
   color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+export const RequiredMark = styled.span`
+  margin-left: 4px;
+  color: ${({ theme }) => theme.colors.danger};
+`;
+export const SuccessText = styled.span`
+  font-size: ${({ theme }) => theme.typography.fontSize.xs};
+  color: ${({ theme }) => theme.colors.success};
+`;
+
+export const Spinner = styled.span`
+  width: 1em;
+  height: 1em;
+
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+
+  animation: spin 0.7s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 `;

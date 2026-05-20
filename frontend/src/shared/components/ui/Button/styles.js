@@ -126,6 +126,10 @@ export const StyledButton = styled.button`
     opacity: 0.55;
     cursor: not-allowed;
   }
+  &:focus-visible {
+    outline: 3px solid ${({ theme }) => theme.colors.primarySoft};
+    outline-offset: 2px;
+  }
 `;
 
 export const ButtonContent = styled.span`
@@ -141,12 +145,24 @@ export const ButtonContent = styled.span`
 `;
 
 export const Spinner = styled.span`
-  width: 16px;
-  height: 16px;
+  width: 1em;
+  height: 1em;
 
   border: 2px solid currentColor;
   border-top-color: transparent;
-  border-radius: ${({ theme }) => theme.radius.round};
+  border-radius: 50%;
 
-  animation: ${spin} 0.75s linear infinite;
+  animation: spin 0.7s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+export const ButtonIcon = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 `;
